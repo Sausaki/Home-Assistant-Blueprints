@@ -5,7 +5,7 @@ blueprint:
     and sends a notification to your phone with the picture.
   domain: automation
   input:
-    motion_sensor:
+    alarm_system:
       name: Alarm system
       description: The alarm wich triggers the snapshot creation
       selector:
@@ -56,13 +56,13 @@ blueprint:
 
     notification_title:
       name: Notification title (Optional)
-      description: 'Default: "Motion detected!"'
-      default: "Motion detected!"
+      description: 'Default: "Alarm aktywowany!"'
+      default: "Alarm aktywowany!"
 
     notification_message:
       name: Notification message (Optional)
-      description: 'Default: "{{ motion_sensor_name }} detected movement!"'
-      default: "{{ motion_sensor_name }} detected movement!"
+      description: 'Default: "{{ alarm_system_name }} detected movement!"'
+      default: "{{ alarm_system_name }} detected movement!"
       
     delay:
       name: Delay (Optional)
@@ -77,12 +77,12 @@ blueprint:
 
 trigger:
   platform: state
-  entity_id: !input motion_sensor
+  entity_id: !input alarm_system
   to: "armed_away"
 
 variables:
-  motion_sensor: !input motion_sensor
-  motion_sensor_name: "{{ states[motion_sensor].name }}"
+  alarm_system: !input alarm_system
+  alarm_system_name: "{{ states[alarm_system].name }}"
   camera: !input camera
   notify_device_1: !input notify_device_1
   notify_device_2: !input notify_device_2
