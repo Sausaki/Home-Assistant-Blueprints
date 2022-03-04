@@ -19,13 +19,34 @@ blueprint:
         entity:
           domain: camera
 
-    notify_device:
+    notify_device_1:
+      name: Device to notify
+      description: Device needs to run the official Home Assistant app to receive notifications
+      selector:
+        device:
+          integration: mobile_app
+         
+    notify_device_2:
+      name: Device to notify
+      description: Device needs to run the official Home Assistant app to receive notifications
+      selector:
+        device:
+          integration: mobile_app
+          
+    notify_device_3:
       name: Device to notify
       description: Device needs to run the official Home Assistant app to receive notifications
       selector:
         device:
           integration: mobile_app
 
+    notify_device_4:
+      name: Device to notify
+      description: Device needs to run the official Home Assistant app to receive notifications
+      selector:
+        device:
+          integration: mobile_app
+          
     is_ios:
       name: Is it an iOS device?
       description: Toggle if your selected device runs iOS, default is Android
@@ -57,14 +78,16 @@ blueprint:
 trigger:
   platform: state
   entity_id: !input motion_sensor
-  from: "armed_away"
-  to: "triggered"
+  to: "armed_away"
 
 variables:
   motion_sensor: !input motion_sensor
   motion_sensor_name: "{{ states[motion_sensor].name }}"
   camera: !input camera
-  notify_device: !input notify_device
+  notify_device_1: !input notify_device_1
+  notify_device_2: !input notify_device_2
+  notify_device_3: !input notify_device_3
+  notify_device_4: !input notify_device_4
   is_ios: !input is_ios
   notification_title: !input notification_title
   notification_message: !input notification_message
@@ -80,7 +103,37 @@ action:
     data:
       filename: "{{ snapshot_create_file_path }}"
 
-  - device_id: !input notify_device
+  - device_id: !input notify_device_1
+    domain: mobile_app
+    type: notify
+    title: "{{ notification_title }}"
+    message: "{{ notification_message }}"
+    data: >
+      {% set android_data = {"image": "%s"} | format(snapshot_access_file_path) %}
+      {% set ios_data = {"attachment": {"url": "%s", "content_type": "JPEG"}} | format(snapshot_access_file_path) %}
+      {{ ios_data if is_ios else android_data }}
+      
+  - device_id: !input notify_device_2
+    domain: mobile_app
+    type: notify
+    title: "{{ notification_title }}"
+    message: "{{ notification_message }}"
+    data: >
+      {% set android_data = {"image": "%s"} | format(snapshot_access_file_path) %}
+      {% set ios_data = {"attachment": {"url": "%s", "content_type": "JPEG"}} | format(snapshot_access_file_path) %}
+      {{ ios_data if is_ios else android_data }}
+      
+  - device_id: !input notify_device_3
+    domain: mobile_app
+    type: notify
+    title: "{{ notification_title }}"
+    message: "{{ notification_message }}"
+    data: >
+      {% set android_data = {"image": "%s"} | format(snapshot_access_file_path) %}
+      {% set ios_data = {"attachment": {"url": "%s", "content_type": "JPEG"}} | format(snapshot_access_file_path) %}
+      {{ ios_data if is_ios else android_data }}
+      
+  - device_id: !input notify_device_4
     domain: mobile_app
     type: notify
     title: "{{ notification_title }}"
