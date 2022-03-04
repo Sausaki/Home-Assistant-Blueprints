@@ -78,7 +78,7 @@ blueprint:
 trigger:
   platform: state
   entity_id: !input alarm_system
-  to: "armed_away"
+  to: "triggered"
 
 variables:
   alarm_system: !input alarm_system
