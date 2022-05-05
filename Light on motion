@@ -15,7 +15,7 @@ blueprint:
         target:
           entity:
             domain: light
-    no_motion_wait:
+    delay:
       name: Wait time to turn off
       description: Time to leave the light on after last motion is detected.
       default: 0
@@ -35,6 +35,11 @@ trigger:
     entity_id: !input motion_entity
     from: "off"
     to: "on"
+    
+variables:
+  motion_entity: !input motion_entity
+  light_target: !input light_target
+  delay: !input delay
 
 action:
   - service: light.turn_on
@@ -44,6 +49,8 @@ action:
       entity_id: !input motion_entity
       from: "on"
       to: "off"
-  - delay: !input no_motion_wait
+  - delay:
+      minutes: >
+        {{ delay }}
   - service: light.turn_off
     target: !input light_target
