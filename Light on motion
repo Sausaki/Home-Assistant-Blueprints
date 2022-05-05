@@ -49,8 +49,6 @@ action:
       entity_id: !input motion_entity
       from: "on"
       to: "off"
-  - delay:
-      minutes: >
-        {{ delay }}
+  - delay: delay
   - service: light.turn_off
     target: !input light_target
