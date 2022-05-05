@@ -1,5 +1,5 @@
 blueprint:
-  name: Switch the light when sensor notices motion
+  name: Light on motion
   description: >
     Automatic turn On and Off the light due to motion sensor readings
   domain: automation
