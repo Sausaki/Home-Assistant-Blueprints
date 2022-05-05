@@ -22,8 +22,8 @@ blueprint:
       selector:
         number:
           min: 0
-          max: 3600
-          unit_of_measurement: seconds
+          max: 60
+          unit_of_measurement: minutes
 
 # If motion is detected within the delay,
 # we restart the script.
