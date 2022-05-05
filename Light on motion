@@ -15,15 +15,15 @@ blueprint:
         target:
           entity:
             domain: light
-    no_motion_wait:
+    delay:
       name: Wait time
       description: Time to leave the light on after last motion is detected.
-      default: 120
+      default: 0
       selector:
         number:
           min: 0
-          max: 3600
-          unit_of_measurement: seconds
+          max: 60
+          unit_of_measurement: minutes
 
 # If motion is detected within the delay,
 # we restart the script.
@@ -44,6 +44,7 @@ action:
       entity_id: !input motion_entity
       from: "on"
       to: "off"
-  - delay: !input no_motion_wait
+  - delay: 
+      minutes: !input delay
   - service: light.turn_off
     target: !input light_target
