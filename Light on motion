@@ -1,6 +1,6 @@
 blueprint:
-  name: Light on motion
-  description: Turn on a light when motion is detected and turn off after delay.
+  name: Motion-activated Light
+  description: Turn on a light when motion is detected.
   domain: automation
   input:
     motion_entity:
@@ -15,15 +15,15 @@ blueprint:
         target:
           entity:
             domain: light
-    wait_time:
-      name: Wait time to turn off
+    no_motion_wait:
+      name: Wait time
       description: Time to leave the light on after last motion is detected.
-      default: 0
+      default: 120
       selector:
         number:
           min: 0
-          max: 60
-          unit_of_measurement: minutes
+          max: 3600
+          unit_of_measurement: seconds
 
 # If motion is detected within the delay,
 # we restart the script.
@@ -35,10 +35,6 @@ trigger:
     entity_id: !input motion_entity
     from: "off"
     to: "on"
-    
-variables:
-  motion_entity: !input motion_entity
-  light_target: !input light_target
 
 action:
   - service: light.turn_on
@@ -48,6 +44,6 @@ action:
       entity_id: !input motion_entity
       from: "on"
       to: "off"
-  - delay: !input wait_time
+  - delay: !input no_motion_wait
   - service: light.turn_off
     target: !input light_target
